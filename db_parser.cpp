@@ -194,6 +194,7 @@ bool UserSectionParser::parse(
         stringstream ss(line);
         User* u = parseUser(ss, ds, errorMsg);
         if(u) {
+            //cout << "ADD USER" << endl;
             ds.addUser(u);
             numRead_++;
         }

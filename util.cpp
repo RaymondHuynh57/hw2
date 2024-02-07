@@ -11,20 +11,56 @@ std::string convToLower(std::string src)
     return src;
 }
 
+
+/*
+Complete the parseStringToWords() in util.cpp according to the specification
+given above for taking a string of many words and splitting them into individual
+keywords (split at punctuation, with at least 2 character words)
+*/
 /** Complete the code to convert a string containing a rawWord
     to a set of words based on the criteria given in the assignment **/
 std::set<std::string> parseStringToWords(string rawWords)
 {
+    set<string> result;
+    set<string>::iterator it;
+    string temp = "";
+    //Name
+    for(unsigned int i = 0 ; i < rawWords.length(); ++i){ //++i makes no copies
+        if(ispunct(rawWords[i]) && rawWords[i] != '\''){
 
+            if(ltrim(temp).empty()){
 
+            }else{
+                result.insert(convToLower(ltrim(temp)));
+            }
+            temp = "";
+        }else if(rawWords[i] == '\''){
+            if(ltrim(temp).empty()){
 
+            }else{
+                result.insert(convToLower(ltrim(temp)));
+            }
+            temp = "";
+            ++i;
+        }else if(isspace(rawWords[i])){
+            if(ltrim(temp).empty()){
 
+            }else{
+                result.insert(convToLower(ltrim(temp)));
+            }
+            temp = "";
+        }
+        else{
+            temp += rawWords[i];
+        }
+        
+    }
+    if(ltrim(temp).empty()){
 
-
-
-
-
-
+    }else{
+        result.insert(convToLower(ltrim(temp)));
+    }
+    return result;
 }
 
 /**************************************************

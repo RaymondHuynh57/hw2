@@ -5,9 +5,12 @@
 #include <vector>
 #include <iomanip>
 #include <algorithm>
+//#include <map>
 #include "product.h"
 #include "db_parser.h"
 #include "product_parser.h"
+#include "datastore.h"
+#include "mydatastore.h"
 #include "util.h"
 
 using namespace std;
@@ -24,13 +27,14 @@ int main(int argc, char* argv[])
         cerr << "Please specify a database file" << endl;
         return 1;
     }
-
+    //cout << "AMAZON BABY" << endl;
+    //set<string> s1 = parseStringToWords("YO MAMA");
     /****************
      * Declare your derived DataStore object here replacing
      *  DataStore type to your derived type
      ****************/
-    DataStore ds;
-
+    MyDataStore ds;
+    
 
 
     // Instantiate the individual section and product parsers we want
@@ -69,6 +73,7 @@ int main(int argc, char* argv[])
         getline(cin,line);
         stringstream ss(line);
         string cmd;
+        //bool AddedYet = false;
         if((ss >> cmd)) {
             if( cmd == "AND") {
                 string term;
@@ -78,6 +83,7 @@ int main(int argc, char* argv[])
                     terms.push_back(term);
                 }
                 hits = ds.search(terms, 0);
+
                 displayProducts(hits);
             }
             else if ( cmd == "OR" ) {
@@ -100,9 +106,59 @@ int main(int argc, char* argv[])
                 done = true;
             }
 	    /* Add support for other commands here */
+            else if(cmd == "ADD"){
+                string Username;
+                string hit_result_index;
+                if(ss >> Username){
+                    if(ss >> hit_result_index){
+                        if(stoul(hit_result_index) <= hits.size() && stoul(hit_result_index) > 0){
+                          bool user_in_vector = false;
+                          for(size_t i = 0; i < ds.Users_.size(); ++i){
+                              if(ds.Users_[i]->getName() == Username){
+                                  user_in_vector = true;
+                                  ds.CartAdd(Username, hits[stoi(hit_result_index)-1]);
+                              }
+                          }
 
-
-
+                          if(user_in_vector == false){
+                              cout << "Invalid Request" << endl;
+                          }
+                      }else{
+                          cout << "Invalid Request" << endl;
+                      }
+                    }else{
+                        cout << "Invalid Request" << endl;
+                    }
+                }else{
+                    cout << "Invalid Request" << endl;
+                }
+            }
+            else if(cmd == "VIEWCART"){
+                string Username;
+                if(ss >> Username){
+                    if(hits.size() > 0){
+                        ds.PrintCart(Username);
+                    }else{
+                        cout << "Invalid Username" << endl;
+                    }
+                    
+                }else{
+                    cout << "Invalid Username" << endl;
+                }
+            }
+            else if(cmd == "BUYCART"){
+                string Username;
+                if(ss >> Username){
+                    if(hits.size() > 0){
+                        ds.BuyCart(Username);
+                    }else{
+                        cout << "Invalid Username" << endl;
+                    }
+                    
+                }else{
+                    cout << "Invalid Username" << endl;
+                }
+            }
 
             else {
                 cout << "Unknown command" << endl;

@@ -10,7 +10,7 @@ using namespace std;
 
 ProductParser::ProductParser()
 {
-
+  //cout << "PRODUCT PARSER" << endl;
 }
 
 
@@ -82,6 +82,7 @@ void ProductParser::parseCommonProduct(std::istream& is,
 
 ProductBookParser::ProductBookParser() : ProductParser()
 {
+  //cout << "BOOK PARSER" << endl;
 }
 
 Product* ProductBookParser::parseSpecificProduct(std::string category,
@@ -123,15 +124,20 @@ std::string ProductBookParser::categoryID()
     return "book";
 }
 
-
+/**
+     * Dynamically allocates a specific product type from the data
+     *  parsed and stored in the specific product parser
+*/
 /**
  * Your job to fill in the code to create a new book product
  * using the data members in this class and the parent ProductParser class
  */
+
+ //Book(const std::string category, const std::string name, double price, int qty, std::string author, std::string isbn);
 Product* ProductBookParser::makeProduct()
 {
-
-
+    Product * temp = new Book("book", prodName_, price_, qty_, author_, isbn_);
+    return temp;
 }
 
 
@@ -178,16 +184,19 @@ std::string ProductClothingParser::categoryID()
     return "clothing";
 }
 
-
+// Clothing(const std::string category, const std::string name, double price, int qty, std::string brand, std::string size);
+/**
+     * Dynamically allocates a specific product type from the data
+     *  parsed and stored in the specific product parser
+*/
 /**
  * Your job to fill in the code to create a new clothing product
  * using the data members in this class and the parent ProductParser class
  */
 Product* ProductClothingParser::makeProduct()
 {
-
-
-
+    Product * temp = new Clothing("clothing", prodName_, price_, qty_, brand_, size_);
+    return temp;
 }
 
 
@@ -238,13 +247,14 @@ std::string ProductMovieParser::categoryID()
     return "movie";
 }
 
-
+//Movie(const std::string category, const std::string name, double price, int qty, std::string genre, std::string rating);
 /**
  * Your job to fill in the code to create a new movie product
  * using the data members in this class and the parent ProductParser class
  */
 Product* ProductMovieParser::makeProduct()
 {
-
+    Product * temp = new Movie("movie", prodName_, price_, qty_, genre_, rating_);
+    return temp;
 
 }
